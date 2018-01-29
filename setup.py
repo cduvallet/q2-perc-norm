@@ -7,13 +7,11 @@
 # ----------------------------------------------------------------------------
 
 from setuptools import setup, find_packages
-import versioneer
 
 # Setup copied from q2-emperor
 setup(
-    name="q2-perc-norm",
-    version=versioneer.get_version(),
-    cmdclass=versioneer.get_cmdclass(),
+    name="perc-norm",
+    version="0.0.1",
     packages=find_packages(),
     author="Claire Duvallet",
     author_email="duvallet@mit.edu",

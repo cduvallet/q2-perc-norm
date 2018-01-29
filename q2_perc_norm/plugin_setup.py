@@ -1,12 +1,12 @@
-from qiime2.plugin import Plugin
-from qiime2.metadata import MetadataColumn, Categorical
+from qiime2.plugin import Plugin, Metadata, MetadataColumn, Categorical
+#from qiime2.metadata import MetadataColumn, Categorical
 from q2_types.feature_table import FeatureTable, RelativeFrequency
 
 import q2_perc_norm
 from q2_perc_norm._percentile_normalize import percentile_normalize
 
 plugin = Plugin(
-    name='Percentile normalization',
+    name='perc_norm',
     version=q2_perc_norm.__version__,
     website='http://www.github.com/cduvallet',
     package='q2_perc_norm',
@@ -25,15 +25,16 @@ plugin = Plugin(
 
 plugin.methods.register_function(
     function=percentile_normalize,
-    inputs={'table': FeatureTable[RelativeFrequency],
-            'metadata': MetadataColumn[Categorical]
+    inputs={'table': FeatureTable[RelativeFrequency]
     },
     outputs=[('perc_norm_table', FeatureTable[RelativeFrequency])],
     input_descriptions={
         'table': ('The feature table containing the samples which will be '
-                  'percentile normalized.'),
-        'metadata': ('Categorical sample metadata column with "case" '
-                     'and "control" labels.')
+                  'percentile normalized.')
+    },
+    parameters={'metadata': MetadataColumn[Categorical]
+    },
+    parameter_descriptions={'metadata': ('Categorical sample metadata column with "case" and "control" labels.')
     },
     output_descriptions={'perc_norm_table': 'The percentile-normalized OTU table.'},
     name='Percentile normalization',
