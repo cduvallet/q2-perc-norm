@@ -42,16 +42,15 @@ def percentile_normalize(table: biom.Table,
     metadata = metadata.filter_ids(table.ids(axis='sample'))
     metadata = metadata.drop_missing_values()
 
-    # filter the distance matrix to exclude samples that were dropped from
+    # filter the table to exclude samples that were dropped from
     # the metadata due to missing values
     table = table.filter(metadata.ids)
 
     metadata = metadata.to_series()
 
     ## Convert biom Table into dense pandas dataframe
-    # Transpose to samples are in rows and OTUs/features in columns
+    # Transpose so samples are in rows and OTUs/features in columns
     df = table.to_dataframe().to_dense().T
-    x = df.values
 
     # Get case and control samples from metadata
     control_samples = metadata[metadata == "control"].index.tolist()
@@ -62,7 +61,32 @@ def percentile_normalize(table: biom.Table,
     if len(control_samples) < N_control_thresh:
         raise ValueError("There aren't enough controls in your data.")
 
-    # TODO: perform filtering for OTU presence in X% of cases or controls
+    # Filter out OTUs which are not present in at least otu_thresh % of
+    # cases OR controls
+    # TODO: make otu_thresh a user variable
+    otu_thresh = 0.3
+    if otu_thresh is not None:
+        perc_df = pd.DataFrame(
+            index=df.columns,
+            columns=['ctrls', 'cases'])
+        perc_df['ctrls'] = \
+            (df.loc[control_samples] != 0).sum() / len(control_samples)
+        perc_df['cases'] = \
+            (df.loc[case_samples] != 0).sum() / len(case_samples)
+        keep_otus = perc_df\
+            .query('(cases >= @otu_thresh) | (ctrls >= @otu_thresh)')\
+            .index
+        df = df[keep_otus]
+
+    # Replace zeros with random draw from uniform(0, zero_val)
+    # TODO: make zero_val a user input
+    zero_val = 1e-9
+    df = df.replace(0.0, np.nan)
+    df_rand = pd.DataFrame(
+        data=np.random.uniform(0.0, zero_val, size=(df.shape[0], df.shape[1])),
+        index=df.index,
+        columns=df.columns)
+    df[pd.isnull(df)] = df_rand[pd.isnull(df)]
 
     # Using numpy is faster than pandas, so get the indices of samples
     control_indices = [df.index.get_loc(i) for i in control_samples]
@@ -73,6 +97,7 @@ def percentile_normalize(table: biom.Table,
 
     ## Normalize control and case samples to percentiles of control distribution
     # j iterates over samples (rows), i iterates over OTUs/features (columns)
+    x = df.values
     norm_x = np.array(
         [
             [sp.percentileofscore(x[control_indices, i], x[j, i], kind='mean')

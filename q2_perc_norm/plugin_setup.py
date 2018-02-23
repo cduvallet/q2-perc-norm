@@ -31,7 +31,7 @@ plugin = Plugin(
 )
 
 #TODO
-# - maybe: define a new FeatureTable[PercentileNormalized] SemanticType and update in the output
+# - define a new FeatureTable[PercentileNormalized] SemanticType and update in the output
 # - add filters and related optional parameters (e.g. minimum number of controls, minimum detection rate within controls or cases)
 
 plugin.methods.register_function(
@@ -50,7 +50,8 @@ plugin.methods.register_function(
                      'labeled as "case" or "control". Samples which '
                      'are not labeled are not included in the output table.')
     },
-    output_descriptions={'perc_norm_table': 'The percentile-normalized OTU table.'},
+    output_descriptions={
+        'perc_norm_table': 'The percentile-normalized OTU table.'},
     name='Percentile normalization',
     description=('Converts OTUs in case samples to percentiles of their '
                  'distribution in controls.')
