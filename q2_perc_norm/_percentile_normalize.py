@@ -16,7 +16,10 @@ import numpy as np
 import scipy.stats as sp
 
 def percentile_normalize(table: biom.Table,
-                         metadata: qiime2.CategoricalMetadataColumn) -> biom.Table:
+                         metadata: qiime2.CategoricalMetadataColumn,
+                         N_control_thresh: int=10,
+                         otu_thresh: float=0.3,
+                         zero_val: float=1e-9) -> biom.Table:
     """
     Converts an input table with cases and controls into percentiles
     of control samples.
@@ -30,12 +33,31 @@ def percentile_normalize(table: biom.Table,
         metadata column with samples labeled as "case" or "control".
         All samples with either label are returned, normalized to the
         equivalent percentile in "control" samples.
+    N_control_thresh : int [default=10]
+        Minimum number of controls accepted to perform percentile
+        normalization. Because the transformation converts abundances
+        in controls to a uniform distribution, we *highly* discourage
+        performing percentile normalization on datasets with fewer than
+        30 controls, and certainly not fewer than 10 (the default value).
+        If you have fewer controls than `N_control_thresh`, the
+        normalization will return an error.
+    otu_thresh : float [default=0.3]
+        The OTU filtering threshold: OTUs must be present in at least
+        otu_thresh percent of cases OR controls, otherwise it gets thrown
+        out and not percentile normalized. This method does not perform
+        well with very sparse OTUs, so we do not recommend lowering
+        this threshold below 0.3.
+    zero_val : float [default=1e-9]
+        Zero abundance counts are replaced by a uniform draw between
+        zero and zero_val. This number should be smaller than the smallest
+        abundance in your OTU table.
 
     Returns
     -------
     norm_biom : biom.Table
         A biom table with the normalized data, only including the samples
-        that were labeled as either "case" or "control".
+        that were labeled as either "case" or "control", and the OTUs
+        which passed the otu_thresh threshold.
     """
     # Filter metadata to only include IDs present in the table.
     # Also ensures every distance table ID is present in the metadata.
@@ -56,16 +78,17 @@ def percentile_normalize(table: biom.Table,
     control_samples = metadata[metadata == "control"].index.tolist()
     case_samples = metadata[metadata == "case"].index.tolist()
 
-    # TODO: make this an optional parameter
-    N_control_thresh = 10
+    # Make sure there are enough controls to perform normalization
+    ## TODO: make this an optional parameter
+    #N_control_thresh = 10
     if len(control_samples) < N_control_thresh:
         raise ValueError("There aren't enough controls in your data.")
 
     # Filter out OTUs which are not present in at least otu_thresh % of
     # cases OR controls
-    # TODO: make otu_thresh a user variable
-    otu_thresh = 0.3
-    if otu_thresh is not None:
+    ## TODO: make otu_thresh a user variable
+    #otu_thresh = 0.3
+    if otu_thresh > 0:
         perc_df = pd.DataFrame(
             index=df.columns,
             columns=['ctrls', 'cases'])
@@ -79,8 +102,8 @@ def percentile_normalize(table: biom.Table,
         df = df[keep_otus]
 
     # Replace zeros with random draw from uniform(0, zero_val)
-    # TODO: make zero_val a user input
-    zero_val = 1e-9
+    ## TODO: make zero_val a user input
+    #zero_val = 1e-9
     df = df.replace(0.0, np.nan)
     df_rand = pd.DataFrame(
         data=np.random.uniform(0.0, zero_val, size=(df.shape[0], df.shape[1])),

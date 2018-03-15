@@ -43,7 +43,10 @@ plugin.methods.register_function(
         'table': ('The feature table containing the samples which will be '
                   'percentile normalized.')
     },
-    parameters={'metadata': MetadataColumn[Categorical]
+    parameters={'metadata': MetadataColumn[Categorical],
+                'N_control_thresh': int,
+                'otu_thresh': float,
+                'zero_val': float
     },
     parameter_descriptions={
         'metadata': ('Sample metadata column which has samples '
