@@ -18,8 +18,7 @@ import scipy.stats as sp
 def percentile_normalize(table: biom.Table,
                          metadata: qiime2.CategoricalMetadataColumn,
                          N_control_thresh: int=10,
-                         otu_thresh: float=0.3,
-                         zero_val: float=1e-9) -> biom.Table:
+                         otu_thresh: float=0.3) -> biom.Table:
     """
     Converts an input table with cases and controls into percentiles
     of control samples.
@@ -43,14 +42,10 @@ def percentile_normalize(table: biom.Table,
         normalization will return an error.
     otu_thresh : float [default=0.3]
         The OTU filtering threshold: OTUs must be present in at least
-        otu_thresh percent of cases OR controls, otherwise it gets thrown
+        otu_thresh fraction of cases OR controls, otherwise it gets thrown
         out and not percentile normalized. This method does not perform
         well with very sparse OTUs, so we do not recommend lowering
-        this threshold below 0.3.
-    zero_val : float [default=1e-9]
-        Zero abundance counts are replaced by a uniform draw between
-        zero and zero_val. This number should be smaller than the smallest
-        abundance in your OTU table.
+        this threshold below 0.3. otu_thresh should be [0, 1]
 
     Returns
     -------
@@ -104,6 +99,7 @@ def percentile_normalize(table: biom.Table,
     # Replace zeros with random draw from uniform(0, zero_val)
     ## TODO: make zero_val a user input
     #zero_val = 1e-9
+    zero_val = df.min().min() / 10.0
     df = df.replace(0.0, np.nan)
     df_rand = pd.DataFrame(
         data=np.random.uniform(0.0, zero_val, size=(df.shape[0], df.shape[1])),

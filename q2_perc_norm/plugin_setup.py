@@ -6,14 +6,15 @@
 # The full license is in the file LICENSE, distributed with this software.
 # ----------------------------------------------------------------------------
 
-from qiime2.plugin import Plugin, Metadata, MetadataColumn, Categorical
+import qiime2.plugin
+from qiime2.plugin import Metadata, MetadataColumn, Categorical
 #from qiime2.metadata import MetadataColumn, Categorical
 from q2_types.feature_table import FeatureTable, RelativeFrequency
 
 import q2_perc_norm
 from q2_perc_norm._percentile_normalize import percentile_normalize
 
-plugin = Plugin(
+plugin = qiime2.plugin.Plugin(
     name='perc_norm',
     version=q2_perc_norm.__version__,
     website='http://www.github.com/cduvallet/q2-perc-norm',
@@ -44,14 +45,26 @@ plugin.methods.register_function(
                   'percentile normalized.')
     },
     parameters={'metadata': MetadataColumn[Categorical],
-                'N_control_thresh': int,
-                'otu_thresh': float,
-                'zero_val': float
+                'N_control_thresh': qiime2.plugin.Int,
+                'otu_thresh': qiime2.plugin.Float
     },
     parameter_descriptions={
         'metadata': ('Sample metadata column which has samples '
-                     'labeled as "case" or "control". Samples which '
-                     'are not labeled are not included in the output table.')
+            'labeled as "case" or "control". Samples which '
+            'are not labeled are not included in the output table.'),
+        'N_control_thresh': ('Minimum number of controls needed to '
+            'perform percentile normalization. Because the transformation '
+            'converts abundances in controls to a uniform distribution, '
+            'we *highly* discourage performing percentile normalization '
+            'on datasets with fewer than 30 controls, and certainly not '
+            'fewer than 10 (the default value). If you have fewer controls '
+            'than `N_control_thresh`, the normalization will return an error.'),
+        'otu_thresh': ('OTU filtering threshold: an OTU must be present in at '
+            'least `otu_thresh` fraction of cases OR controls, otherwise it '
+            'gets thrown out and not percentile normalized. Percentile '
+            'normalization does not perform well with very sparse OTUs, so '
+            'we do not recommend lowering this threshold below 0.3. '
+            'otu_thresh should be a value between 0 and 1 (inclusive).')
     },
     output_descriptions={
         'perc_norm_table': 'The percentile-normalized OTU table.'},
