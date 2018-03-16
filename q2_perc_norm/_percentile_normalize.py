@@ -17,7 +17,7 @@ import scipy.stats as sp
 
 def percentile_normalize(table: biom.Table,
                          metadata: qiime2.CategoricalMetadataColumn,
-                         N_control_thresh: int=10,
+                         n_control_thresh: int=10,
                          otu_thresh: float=0.3) -> biom.Table:
     """
     Converts an input table with cases and controls into percentiles

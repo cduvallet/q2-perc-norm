@@ -45,14 +45,14 @@ plugin.methods.register_function(
                   'percentile normalized.')
     },
     parameters={'metadata': MetadataColumn[Categorical],
-                'N_control_thresh': qiime2.plugin.Int,
+                'n_control_thresh': qiime2.plugin.Int,
                 'otu_thresh': qiime2.plugin.Float
     },
     parameter_descriptions={
         'metadata': ('Sample metadata column which has samples '
             'labeled as "case" or "control". Samples which '
             'are not labeled are not included in the output table.'),
-        'N_control_thresh': ('Minimum number of controls needed to '
+        'n_control_thresh': ('Minimum number of controls needed to '
             'perform percentile normalization. Because the transformation '
             'converts abundances in controls to a uniform distribution, '
             'we *highly* discourage performing percentile normalization '
