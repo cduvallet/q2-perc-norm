@@ -32,13 +32,13 @@ def percentile_normalize(table: biom.Table,
         metadata column with samples labeled as "case" or "control".
         All samples with either label are returned, normalized to the
         equivalent percentile in "control" samples.
-    N_control_thresh : int [default=10]
+    n_control_thresh : int [default=10]
         Minimum number of controls accepted to perform percentile
         normalization. Because the transformation converts abundances
         in controls to a uniform distribution, we *highly* discourage
         performing percentile normalization on datasets with fewer than
         30 controls, and certainly not fewer than 10 (the default value).
-        If you have fewer controls than `N_control_thresh`, the
+        If you have fewer controls than `n_control_thresh`, the
         normalization will return an error.
     otu_thresh : float [default=0.3]
         The OTU filtering threshold: OTUs must be present in at least
@@ -76,8 +76,9 @@ def percentile_normalize(table: biom.Table,
     # Make sure there are enough controls to perform normalization
     ## TODO: make this an optional parameter
     #N_control_thresh = 10
-    if len(control_samples) < N_control_thresh:
-        raise ValueError("There aren't enough controls in your data.")
+    if len(control_samples) < n_control_thresh:
+        raise ValueError("There aren't enough controls in your data. "
+            "(n_control_thresh = {})".format(n_control_thresh))
 
     # Filter out OTUs which are not present in at least otu_thresh % of
     # cases OR controls
@@ -99,8 +100,8 @@ def percentile_normalize(table: biom.Table,
     # Replace zeros with random draw from uniform(0, zero_val)
     ## TODO: make zero_val a user input
     #zero_val = 1e-9
-    zero_val = df.min().min() / 10.0
     df = df.replace(0.0, np.nan)
+    zero_val = df.min().min() / 10.0
     df_rand = pd.DataFrame(
         data=np.random.uniform(0.0, zero_val, size=(df.shape[0], df.shape[1])),
         index=df.index,

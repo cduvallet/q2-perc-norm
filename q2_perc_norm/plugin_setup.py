@@ -27,7 +27,7 @@ plugin = qiime2.plugin.Plugin(
                  'procedure where features (i.e. bacterial taxa) in case '
                  'samples are converted to percentiles of the equivalent '
                  'features in control samples within a study prior to pooling data across studies.'),
-    short_description='Plugin to percentile-normalize case-control data.',
+    short_description='Plugin for percentile-normalizing case-control data.',
     user_support_text=('Raise an issue on the github repo: https://github.com/cduvallet/q2-perc-norm')
 )
 
