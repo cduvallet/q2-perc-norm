@@ -7,9 +7,8 @@
 # ----------------------------------------------------------------------------
 
 import qiime2.plugin
-from qiime2.plugin import Metadata, MetadataColumn, Categorical
-#from qiime2.metadata import MetadataColumn, Categorical
-from q2_types.feature_table import FeatureTable, RelativeFrequency
+from qiime2.plugin import Metadata, MetadataColumn, Categorical, SemanticType
+from q2_types.feature_table import FeatureTable, RelativeFrequency, BIOMV210DirFmt
 
 import q2_perc_norm
 from q2_perc_norm._percentile_normalize import percentile_normalize
@@ -33,13 +32,20 @@ plugin = qiime2.plugin.Plugin(
 
 #TODO
 # - define a new FeatureTable[PercentileNormalized] SemanticType and update in the output
-# - add filters and related optional parameters (e.g. minimum number of controls, minimum detection rate within controls or cases)
 
+# Define new output type
+PercentileNormalized = SemanticType('PercentileNormalized',
+    variant_of=FeatureTable.field['content'])
+
+plugin.register_semantic_type_to_format(FeatureTable[PercentileNormalized],
+    artifact_format=BIOMV210DirFmt)
+
+# Register percentile normalize function (it's the only one so far)
 plugin.methods.register_function(
     function=percentile_normalize,
     inputs={'table': FeatureTable[RelativeFrequency]
     },
-    outputs=[('perc_norm_table', FeatureTable[RelativeFrequency])],
+    outputs=[('perc_norm_table', FeatureTable[PercentileNormalized])],
     input_descriptions={
         'table': ('The feature table containing the samples which will be '
                   'percentile normalized.')

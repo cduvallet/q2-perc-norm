@@ -74,16 +74,12 @@ def percentile_normalize(table: biom.Table,
     case_samples = metadata[metadata == "case"].index.tolist()
 
     # Make sure there are enough controls to perform normalization
-    ## TODO: make this an optional parameter
-    #N_control_thresh = 10
     if len(control_samples) < n_control_thresh:
         raise ValueError("There aren't enough controls in your data. "
             "(n_control_thresh = {})".format(n_control_thresh))
 
     # Filter out OTUs which are not present in at least otu_thresh % of
     # cases OR controls
-    ## TODO: make otu_thresh a user variable
-    #otu_thresh = 0.3
     if otu_thresh > 0:
         perc_df = pd.DataFrame(
             index=df.columns,
@@ -98,8 +94,7 @@ def percentile_normalize(table: biom.Table,
         df = df[keep_otus]
 
     # Replace zeros with random draw from uniform(0, zero_val)
-    ## TODO: make zero_val a user input
-    #zero_val = 1e-9
+    # where zero_val is the minimum abundance divided by 10
     df = df.replace(0.0, np.nan)
     zero_val = df.min().min() / 10.0
     df_rand = pd.DataFrame(
