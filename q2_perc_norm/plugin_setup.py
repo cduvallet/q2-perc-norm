@@ -30,12 +30,11 @@ plugin = qiime2.plugin.Plugin(
     user_support_text=('Raise an issue on the github repo: https://github.com/cduvallet/q2-perc-norm')
 )
 
-#TODO
-# - define a new FeatureTable[PercentileNormalized] SemanticType and update in the output
-
 # Define new output type
 PercentileNormalized = SemanticType('PercentileNormalized',
     variant_of=FeatureTable.field['content'])
+
+plugin.register_semantic_types(PercentileNormalized)
 
 plugin.register_semantic_type_to_format(FeatureTable[PercentileNormalized],
     artifact_format=BIOMV210DirFmt)
