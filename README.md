@@ -10,12 +10,12 @@ Then, from the main folder run `python setup.py install`. Now, when you type `qi
 
 # Using the plugin
 
-Currently, the only method available in this plugin is `percentile-normalize`, which percentile normalizes the abundance of OTUs in case samples with respect to their abundance in control samples.
+The only method in this plugin is `percentile-normalize`, which percentile normalizes the abundance of OTUs in case samples with respect to their abundance in control samples.
 
 ## Preparing your data
 
 You'll need to prepare your OTU table and metadata file for use with this plugin.
-Your OTU table should be imported as a [QIIME 2 artifact](https://docs.qiime2.org/2018.2/concepts/#data-files-qiime-2-artifacts), with OTUs in rows and samples in columns.
+Your OTU table should be imported as a [QIIME 2 artifact](https://docs.qiime2.org/2018.2/concepts/#data-files-qiime-2-artifacts), with **OTUs in rows** and **samples in columns**.
 Metadata should be a tab-delimited file with a column that contains samples labeled `case` and `control`.
 
 You can use your own OTU table, or make a fake OTU table with `make_fake_data.py` in the `test_data/` folder here.
@@ -23,8 +23,17 @@ You can use your own OTU table, or make a fake OTU table with `make_fake_data.py
 If you're starting from a text file, you first need to convert the OTU table to biom format before you can import it into QIIME 2.
 
 ```
-biom convert -i test_otu_table.transpose.txt -o test_otu_table.transpose.biom --table-type="OTU table" --to-hdf5
-qiime tools import --input-path test_otu_table.transpose.biom --type 'FeatureTable[RelativeFrequency]' --source-format BIOMV210Format --output-path test_otu_table.transpose.qza
+biom convert \
+  -i test_otu_table.transpose.txt \
+  -o test_otu_table.transpose.biom \
+  --table-type="OTU table" \
+  --to-hdf5
+
+qiime tools import \
+  --input-path test_otu_table.transpose.biom \
+  --type 'FeatureTable[RelativeFrequency]' \
+  --source-format BIOMV210Format \
+  --output-path test_otu_table.transpose.qza
 ```
 
 ## Run percentile normalization
@@ -32,9 +41,15 @@ qiime tools import --input-path test_otu_table.transpose.biom --type 'FeatureTab
 You then run the `percentile-normalize` script from the `perc-norm` qiime plugin.
 
 ```
-qiime perc-norm percentile-normalize --i-table test_otu_table.transpose.qza --m-metadata-file test_metadata.txt --m-metadata-column DiseaseState --o-perc-norm-table test_out.percentile_qiime.qza
+qiime perc-norm percentile-normalize \
+  --i-table test_otu_table.transpose.qza \
+  --m-metadata-file test_metadata.txt \
+  --m-metadata-column DiseaseState \
+  --o-perc-norm-table test_out.percentile_qiime.qza
 ```
 
 # To do's
 
 * Make plugin conda-installable    
+* Update QIIME 2 downstream analyses to accept `FeatureTable[PercentileNormalized]`     
+* Accept user-inputted case and control labels in column
