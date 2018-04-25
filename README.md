@@ -1,6 +1,8 @@
 # q2-perc-norm
 
-QIIME 2 plugin for percentile normalization to correct for batch effects in microbiome case-control studies
+QIIME 2 plugin for percentile normalization to correct for batch effects in microbiome case-control studies.
+
+Read more about the method in our [paper](https://doi.org/10.1371/journal.pcbi.1006102) (Gibbons et al, PLOS Comp Bio 2018).
 
 # Installing
 

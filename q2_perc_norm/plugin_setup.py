@@ -20,8 +20,8 @@ plugin = qiime2.plugin.Plugin(
     package='q2_perc_norm',
     citation_text=('Sean Gibbons, Claire Duvallet, and Eric Alm. '
                    '"Correcting for batch effects in case-control '
-                   'microbiome studies". bioRxiv (2017) '
-                   'https://doi.org/10.1101/165910'),
+                   'microbiome studies". PLoS Comp Bio (2018) '
+                   'https://doi.org/10.1371/journal.pcbi.1006102'),
     description=('This QIIME 2 plugin performs a model-free normalization '
                  'procedure where features (i.e. bacterial taxa) in case '
                  'samples are converted to percentiles of the equivalent '
