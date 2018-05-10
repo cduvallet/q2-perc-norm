@@ -13,15 +13,15 @@ from q2_types.feature_table import FeatureTable, RelativeFrequency, BIOMV210DirF
 import q2_perc_norm
 from q2_perc_norm._percentile_normalize import percentile_normalize
 
+cites = qiime2.plugin.Citations.load('citations.bib',
+    package='q2_perc_norm')
+
 plugin = qiime2.plugin.Plugin(
     name='perc_norm',
     version=q2_perc_norm.__version__,
     website='http://www.github.com/cduvallet/q2-perc-norm',
     package='q2_perc_norm',
-    citation_text=('Sean Gibbons, Claire Duvallet, and Eric Alm. '
-                   '"Correcting for batch effects in case-control '
-                   'microbiome studies". PLoS Comp Bio (2018) '
-                   'https://doi.org/10.1371/journal.pcbi.1006102'),
+    citations=[cites['percnorm2018gibbons']],
     description=('This QIIME 2 plugin performs a model-free normalization '
                  'procedure where features (i.e. bacterial taxa) in case '
                  'samples are converted to percentiles of the equivalent '
