@@ -23,4 +23,7 @@ setup(
         ['q2-perc-norm=q2_perc_norm.plugin_setup:plugin']
     },
     zip_safe=False,
+    package_data={
+        'q2_perc_norm': ['citations.bib']
+    }
 )
