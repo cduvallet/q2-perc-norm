@@ -6,9 +6,25 @@ Read more about the method in our [paper](https://doi.org/10.1371/journal.pcbi.1
 
 # Installing
 
-First, make sure you've [installed QIIME 2](https://docs.qiime2.org/2018.2/install/) and have activated the QIIME 2 virtual environment (`source activate qiime2-2018.2`).
+You can install this plugin with conda or by cloning this repo and installing manually. 
+You need to have QIIME 2 version 2018.4 or later. 
+Also, regardless of which way you install, you need to be in a QIIME 2 environment for this to work. 
+[Install QIIME 2](https://docs.qiime2.org/2018.2/install/) and activate the QIIME 2 virtual environment (`source activate qiime2-2018.2`) before installing this plugin.
 
-Then, from the main folder run `python setup.py install`. Now, when you type `qiime` on the command line, the `perc-norm` plugin should show up in the list of available plugins.
+To install from conda, run:
+
+```
+conda install -c cduvallet q2_perc_norm
+```
+
+To install from this repo, clone the repo to your computer, `cd` into the main directory, and run:
+
+```
+python setup.py install
+```
+
+You can check that the installation worked by typing `qiime` on the command line.
+The `perc-norm` plugin should show up in the list of available plugins.
 
 # Using the plugin
 
@@ -20,6 +36,11 @@ You'll need to prepare your OTU table and metadata file for use with this plugin
 Your OTU table should be imported as a [QIIME 2 artifact](https://docs.qiime2.org/2018.2/concepts/#data-files-qiime-2-artifacts), with **OTUs in rows** and **samples in columns**.
 Metadata should be a tab-delimited file with a column that contains samples labeled `case` and `control`.
 
+If your OTU table is already a QIIME 2 artifact, you can skip directly to running the code.
+Otherwise, follow the instructions below to use your own tab-delimited OTU table.
+
+### Import tab-delimited OTU table into QIIME 2
+
 You can use your own OTU table, or make a fake OTU table with `make_fake_data.py` in the `test_data/` folder here.
 
 If you're starting from a text file, you first need to convert the OTU table to biom format before you can import it into QIIME 2.
@@ -30,7 +51,11 @@ biom convert \
   -o test_otu_table.transpose.biom \
   --table-type="OTU table" \
   --to-hdf5
+```
 
+Once it's in biom format, you can import it into QIIME 2, turning it into an artifact:
+
+```
 qiime tools import \
   --input-path test_otu_table.transpose.biom \
   --type 'FeatureTable[RelativeFrequency]' \
@@ -52,6 +77,5 @@ qiime perc-norm percentile-normalize \
 
 # To do's
 
-* Make plugin conda-installable    
 * Update QIIME 2 downstream analyses to accept `FeatureTable[PercentileNormalized]`     
 * Accept user-inputted case and control labels in column
