@@ -50,6 +50,7 @@ plugin.methods.register_function(
                   'percentile normalized.')
     },
     parameters={'metadata': MetadataColumn[Categorical],
+                'batch': MetadataColumn[Categorical],
                 'n_control_thresh': qiime2.plugin.Int,
                 'otu_thresh': qiime2.plugin.Float
     },
@@ -57,6 +58,9 @@ plugin.methods.register_function(
         'metadata': ('Sample metadata column which has samples '
             'labeled as "case" or "control". Samples which '
             'are not labeled are not included in the output table.'),
+        'batch': ('Optional: the sample metadata column which has '
+            'different batches labeled. Batch labels do not need any '
+            'specific format or value, but should be unique.'),
         'n_control_thresh': ('Minimum number of controls needed to '
             'perform percentile normalization. Because the transformation '
             'converts abundances in controls to a uniform distribution, '
@@ -72,7 +76,12 @@ plugin.methods.register_function(
             'otu_thresh should be a value between 0 and 1 (inclusive).')
     },
     output_descriptions={
-        'perc_norm_table': 'The percentile-normalized OTU table.'},
+        'perc_norm_table': ('The percentile-normalized OTU table. '
+            'If multiple batches were given, this table contains '
+            'data which was percentile-normalized within each batch and '
+            'then merged. Note that some OTUs may be filtered from certain '
+            'batches if they are too infrequent within that batch. These '
+            'will be NaN in the output OTU table.')},
     name='Percentile normalization',
     description=('Converts OTUs in case samples to percentiles of their '
                  'distribution in controls.')

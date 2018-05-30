@@ -1,41 +1,81 @@
-#SampleID	DiseaseState
-control0	control
-control1	control
-control2	control
-control3	control
-control4	control
-control5	control
-control6	control
-control7	control
-control8	control
-control9	control
-control10	control
-control11	control
-control12	control
-control13	control
-control14	control
-control15	control
-control16	control
-control17	control
-control18	control
-control19	control
-case0	case
-case1	case
-case2	case
-case3	case
-case4	case
-case5	case
-case6	case
-case7	case
-case8	case
-case9	case
-case10	case
-case11	case
-case12	case
-case13	case
-case14	case
-case15	case
-case16	case
-case17	case
-case18	case
-case19	case
+#SampleID	DiseaseState	batch
+control0_0	control	batch0
+control1_0	control	batch0
+control2_0	control	batch0
+control3_0	control	batch0
+control4_0	control	batch0
+control5_0	control	batch0
+control6_0	control	batch0
+control7_0	control	batch0
+control8_0	control	batch0
+control9_0	control	batch0
+control10_0	control	batch0
+control11_0	control	batch0
+control12_0	control	batch0
+control13_0	control	batch0
+control14_0	control	batch0
+control15_0	control	batch0
+control16_0	control	batch0
+control17_0	control	batch0
+control18_0	control	batch0
+control19_0	control	batch0
+case0_0	case	batch0
+case1_0	case	batch0
+case2_0	case	batch0
+case3_0	case	batch0
+case4_0	case	batch0
+case5_0	case	batch0
+case6_0	case	batch0
+case7_0	case	batch0
+case8_0	case	batch0
+case9_0	case	batch0
+case10_0	case	batch0
+case11_0	case	batch0
+case12_0	case	batch0
+case13_0	case	batch0
+case14_0	case	batch0
+case15_0	case	batch0
+case16_0	case	batch0
+case17_0	case	batch0
+case18_0	case	batch0
+case19_0	case	batch0
+control0_1	control	batch1
+control1_1	control	batch1
+control2_1	control	batch1
+control3_1	control	batch1
+control4_1	control	batch1
+control5_1	control	batch1
+control6_1	control	batch1
+control7_1	control	batch1
+control8_1	control	batch1
+control9_1	control	batch1
+control10_1	control	batch1
+control11_1	control	batch1
+control12_1	control	batch1
+control13_1	control	batch1
+control14_1	control	batch1
+control15_1	control	batch1
+control16_1	control	batch1
+control17_1	control	batch1
+control18_1	control	batch1
+control19_1	control	batch1
+case0_1	case	batch1
+case1_1	case	batch1
+case2_1	case	batch1
+case3_1	case	batch1
+case4_1	case	batch1
+case5_1	case	batch1
+case6_1	case	batch1
+case7_1	case	batch1
+case8_1	case	batch1
+case9_1	case	batch1
+case10_1	case	batch1
+case11_1	case	batch1
+case12_1	case	batch1
+case13_1	case	batch1
+case14_1	case	batch1
+case15_1	case	batch1
+case16_1	case	batch1
+case17_1	case	batch1
+case18_1	case	batch1
+case19_1	case	batch1

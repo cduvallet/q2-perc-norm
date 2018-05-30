@@ -6,9 +6,9 @@ Read more about the method in our [paper](https://doi.org/10.1371/journal.pcbi.1
 
 # Installing
 
-You can install this plugin with conda or by cloning this repo and installing manually. 
-You need to have QIIME 2 version 2018.4 or later. 
-Also, regardless of which way you install, you need to be in a QIIME 2 environment for this to work. 
+You can install this plugin with conda or by cloning this repo and installing manually.
+You need to have QIIME 2 version 2018.4 or later.
+Also, regardless of which way you install, you need to be in a QIIME 2 environment for this to work.
 [Install QIIME 2](https://docs.qiime2.org/2018.2/install/) and activate the QIIME 2 virtual environment (`source activate qiime2-2018.2`) before installing this plugin.
 
 To install from conda, run:
@@ -79,3 +79,8 @@ qiime perc-norm percentile-normalize \
 
 * Update QIIME 2 downstream analyses to accept `FeatureTable[PercentileNormalized]`     
 * Accept user-inputted case and control labels in column
+
+# Versions
+
+* 2018.4.1 - add multiple batch handling in `percentile-normalize`     
+* 2018.4.0 - initial plugin
