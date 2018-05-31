@@ -82,5 +82,22 @@ qiime perc-norm percentile-normalize \
 
 # Versions
 
+* 2018.4.2 - allow Numeric metadata column to specify batch    
 * 2018.4.1 - add multiple batch handling in `percentile-normalize`     
 * 2018.4.0 - initial plugin
+
+# Updating conda build
+
+This is the command to build an updated conda package:
+
+```
+conda-build pyinstrument/ \
+ -c https://conda.anaconda.org/qiime2/label/r2018.4 \
+ -c https://conda.anaconda.org/qiime2 \
+ -c https://conda.anaconda.org/conda-forge \
+ -c defaults \
+ -c https://conda.anaconda.org/bioconda \
+ -c https://conda.anaconda.org/biocore \
+ --override-channels \
+ --python 3.5
+```
