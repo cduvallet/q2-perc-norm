@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------
 
 import qiime2.plugin
-from qiime2.plugin import Metadata, MetadataColumn, Categorical, SemanticType
+from qiime2.plugin import Metadata, MetadataColumn, Categorical, Numeric, SemanticType
 from q2_types.feature_table import FeatureTable, RelativeFrequency, BIOMV210DirFmt
 
 import q2_perc_norm
@@ -50,7 +50,7 @@ plugin.methods.register_function(
                   'percentile normalized.')
     },
     parameters={'metadata': MetadataColumn[Categorical],
-                'batch': MetadataColumn[Categorical],
+                'batch': MetadataColumn[Categorical | Numeric],
                 'n_control_thresh': qiime2.plugin.Int,
                 'otu_thresh': qiime2.plugin.Float
     },

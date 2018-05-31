@@ -82,8 +82,8 @@ def _percentile_normalize_one_df(df, control_samples, case_samples, otu_thresh):
 
 
 def percentile_normalize(table: biom.Table,
-                         metadata: qiime2.CategoricalMetadataColumn,
-                         batch: qiime2.CategoricalMetadataColumn=None,
+                         metadata: qiime2.MetadataColumn,
+                         batch: qiime2.MetadataColumn=None,
                          n_control_thresh: int=10,
                          otu_thresh: float=0.3) -> biom.Table:
     """
