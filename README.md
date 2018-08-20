@@ -79,6 +79,11 @@ qiime perc-norm percentile-normalize \
 
 * Update QIIME 2 downstream analyses to accept `FeatureTable[PercentileNormalized]`     
 * Accept user-inputted case and control labels in column
+* Make tutorial showing how to percentile normalize multiple datasets
+    - download multiple feature tables; add case/control and study columns in the metadata
+    - merge the feature tables (and metadata tables, if possible) with q2-feature-table
+    - percentile normalize the data with the batch handling
+* After PercentileNormalized is accepted into q2-types, remove declaration from here
 
 # Versions
 

@@ -30,6 +30,7 @@ plugin = qiime2.plugin.Plugin(
     user_support_text=('Raise an issue on the github repo: https://github.com/cduvallet/q2-perc-norm')
 )
 
+## TODO: delete this after declaration gets merged to q2-types
 # Define new output type
 PercentileNormalized = SemanticType('PercentileNormalized',
     variant_of=FeatureTable.field['content'])
@@ -60,7 +61,9 @@ plugin.methods.register_function(
             'are not labeled are not included in the output table.'),
         'batch': ('Optional: the sample metadata column which has '
             'different batches labeled. Batch labels do not need any '
-            'specific format or value, but should be unique.'),
+            'specific format or value, but should be unique. Batch '
+            'labels can correspond to the study ID, to percentile-normalize '
+            'within each study (for example).'),
         'n_control_thresh': ('Minimum number of controls needed to '
             'perform percentile normalization. Because the transformation '
             'converts abundances in controls to a uniform distribution, '

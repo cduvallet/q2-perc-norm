@@ -99,6 +99,13 @@ def percentile_normalize(table: biom.Table,
         metadata column with samples labeled as "case" or "control".
         All samples with either label are returned, normalized to the
         equivalent percentile in "control" samples.
+    batch : qiime2.CategoricalMetadataColumn
+        metadata column with the different batches labeled. Percentile
+        normalization will be performed within each batch, and the output
+        tables will be concatenated together. You can use this to normalize
+        multiple studies at once by first merging the original feature table,
+        adding a study ID column in the merged metadata, and then calling
+        percentile normalization with this option.
     n_control_thresh : int [default=10]
         Minimum number of controls accepted to perform percentile
         normalization. Because the transformation converts abundances
