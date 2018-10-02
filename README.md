@@ -92,6 +92,12 @@ qiime perc-norm percentile-normalize \
 * 2018.4.1 - add multiple batch handling in `percentile-normalize`     
 * 2018.4.0 - initial plugin
 
+## Compatibilities
+
+q2-perc-norm versions 2018.4.* are not compatible with QIIME 2 versions
+2018.8 or later. Similarly, q2-perc-norm version 2018.10 and later are not
+compatible with QIIME 2 versions earlier than 2018.8.
+
 # Updating conda build
 
 This is the command to build an updated conda package:
