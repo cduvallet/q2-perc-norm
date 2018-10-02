@@ -8,7 +8,7 @@
 
 import qiime2.plugin
 from qiime2.plugin import Metadata, MetadataColumn, Categorical, Numeric, SemanticType
-from q2_types.feature_table import FeatureTable, RelativeFrequency, BIOMV210DirFmt
+from q2_types.feature_table import FeatureTable, RelativeFrequency, BIOMV210DirFmt, PercentileNormalized
 
 import q2_perc_norm
 from q2_perc_norm._percentile_normalize import percentile_normalize
@@ -29,16 +29,6 @@ plugin = qiime2.plugin.Plugin(
     short_description='Plugin for percentile-normalizing case-control data.',
     user_support_text=('Raise an issue on the github repo: https://github.com/cduvallet/q2-perc-norm')
 )
-
-## TODO: delete this after declaration gets merged to q2-types
-# Define new output type
-PercentileNormalized = SemanticType('PercentileNormalized',
-    variant_of=FeatureTable.field['content'])
-
-plugin.register_semantic_types(PercentileNormalized)
-
-plugin.register_semantic_type_to_format(FeatureTable[PercentileNormalized],
-    artifact_format=BIOMV210DirFmt)
 
 # Register percentile normalize function (it's the only one so far)
 plugin.methods.register_function(
