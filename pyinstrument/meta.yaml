@@ -1,6 +1,6 @@
 package:
   name: q2_perc_norm
-  version: 2018.10
+  version: 2019.4
 
 source:
   path: ../
@@ -18,13 +18,13 @@ extra:
 requirements:
 
   build:
-    - python
+    - python=3.6
     - setuptools
 
   run:
-    - python
+    - python=3.6
     # QIIME 2 things for the setup
-    - qiime2 >=2018.4
+    - qiime2 >=2019.1
     - q2-types
     # Other modules used in the actual code
     - biom-format

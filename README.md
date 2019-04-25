@@ -7,9 +7,9 @@ Read more about the method in our [paper](https://doi.org/10.1371/journal.pcbi.1
 # Installing
 
 You can install this plugin with conda or by cloning this repo and installing manually.
-You need to have QIIME 2 version 2018.4 or later.
+You need to have QIIME 2 version 2019.1 or later (though earlier versions of this plugin work with earlier versions of QIIME 2).
 Also, regardless of which way you install, you need to be in a QIIME 2 environment for this to work.
-[Install QIIME 2](https://docs.qiime2.org/2018.2/install/) and activate the QIIME 2 virtual environment (`source activate qiime2-2018.2`) before installing this plugin.
+[Install QIIME 2](https://docs.qiime2.org/2019.1/install/) and activate the QIIME 2 virtual environment (`source activate qiime2-2019.1`) before installing this plugin.
 
 To install from conda, run:
 
@@ -33,7 +33,7 @@ The only method in this plugin is `percentile-normalize`, which percentile norma
 ## Preparing your data
 
 You'll need to prepare your OTU table and metadata file for use with this plugin.
-Your OTU table should be imported as a [QIIME 2 artifact](https://docs.qiime2.org/2018.2/concepts/#data-files-qiime-2-artifacts), with **OTUs in rows** and **samples in columns**.
+Your OTU table should be imported as a [QIIME 2 artifact](https://docs.qiime2.org/2019.1/concepts/#data-files-qiime-2-artifacts), with **OTUs in rows** and **samples in columns**.
 Metadata should be a tab-delimited file with a column that contains samples labeled `case` and `control`.
 
 If your OTU table is already a QIIME 2 artifact, you can skip directly to running the code.
@@ -87,6 +87,7 @@ qiime perc-norm percentile-normalize \
 
 # Versions
 
+* 2019.4 - re-build package with Python 3.6, for compatibility with qiime 2019.1 release and later
 * 2018.10 - fix conflicting PercentileNormalize type after qiime2 2018.8 release
 * 2018.4.2 - allow Numeric metadata column to specify batch    
 * 2018.4.1 - add multiple batch handling in `percentile-normalize`     
@@ -94,22 +95,23 @@ qiime perc-norm percentile-normalize \
 
 ## Compatibilities
 
-q2-perc-norm versions 2018.4.* are not compatible with QIIME 2 versions
-2018.8 or later. Similarly, q2-perc-norm version 2018.10 and later are not
-compatible with QIIME 2 versions earlier than 2018.8.
+* q2-perc-norm versions 2018.* are not compatible with QIIME 2 versions 2019.* and later
+* q2-perc-norm version 2018.10 and later are not compatible with QIIME 2 versions earlier than 2018.8
+* q2-perc-norm versions 2018.4.* are not compatible with QIIME 2 versions
+2018.8 or later
 
 # Updating conda build
 
-This is the command to build an updated conda package:
+This is mostly a note to myself, if you are using this plugin then you can ignore this. This is the command to build an updated conda package:
 
 ```
 conda-build pyinstrument/ \
- -c https://conda.anaconda.org/qiime2/label/r2018.8 \
+ -c https://conda.anaconda.org/qiime2/label/r2019.1 \
  -c https://conda.anaconda.org/qiime2 \
  -c https://conda.anaconda.org/conda-forge \
  -c defaults \
  -c https://conda.anaconda.org/bioconda \
  -c https://conda.anaconda.org/biocore \
  --override-channels \
- --python 3.5
+ --python 3.6
 ```
