@@ -129,13 +129,11 @@ qiime perc-norm percentile-normalize \
 This is mostly a note to myself, if you are using this plugin then you can ignore this. This is the command to build an updated conda package:
 
 ```
-conda-build pyinstrument/ \
- -c https://conda.anaconda.org/qiime2/label/r2019.1 \
- -c https://conda.anaconda.org/qiime2 \
- -c https://conda.anaconda.org/conda-forge \
+conda-build recipe/ \
+ -c qiime2/label/r2019.1 \
+ -c conda-forge \
+ -c bioconda \
  -c defaults \
- -c https://conda.anaconda.org/bioconda \
- -c https://conda.anaconda.org/biocore \
  --override-channels \
  --python 3.6
 ```
