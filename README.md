@@ -34,14 +34,27 @@ The only method in this plugin is `percentile-normalize`, which percentile norma
 
 You'll need to prepare your OTU table and metadata file for use with this plugin.
 Your OTU table should be imported as a [QIIME 2 artifact](https://docs.qiime2.org/2019.1/concepts/#data-files-qiime-2-artifacts), with **OTUs in rows** and **samples in columns**.
+
 Metadata should be a tab-delimited file with a column that contains samples labeled `case` and `control`.
+It can also have a column that labels which batch each sample belongs to.
+If this column is not specified, then percentile normalization is performed across all cases and controls provided in one go.
 
 If your OTU table is already a QIIME 2 artifact, you can skip directly to running the code.
 Otherwise, follow the instructions below to use your own tab-delimited OTU table.
 
+### Notes on metadata and batch indicators
+
+Your metadata file and the file that indicates which samples are in which batch don't need to be the same file (but can be the same). If you have two files, both need to have the sample IDs in the first column, and these IDs need to match the sample IDs in your OTU table.
+
+The name of the column indicating the case/control status and the batch don't matter, because you specify them in your call to the percentile normalization function.
+
+The values in the column indicating batches don't matter, as long as each batch gets a distinct value.
+
+The values in the column indicating case or control status do matter, and need to be `case` or `control` exactly.
+
 ### Import tab-delimited OTU table into QIIME 2
 
-You can use your own OTU table, or make a fake OTU table with `make_fake_data.py` in the `test_data/` folder here.
+You can use your own OTU table, or make a fake OTU table with `make_fake_data.py` in the `test_data/` folder here. This creates a fake OTU table and associated metadata file with case/control data (labeled in the "DiseaseState" column) from two different "experiments," labeled in the "batch" column.
 
 If you're starting from a text file, you first need to convert the OTU table to biom format before you can import it into QIIME 2.
 
@@ -75,15 +88,26 @@ qiime perc-norm percentile-normalize \
   --o-perc-norm-table test_out.percentile_qiime.qza
 ```
 
+If you have multiple batches in your metadata, you can also use the `--m-batch-file` and `--m-batch-column` flags to percentile normalize each batch separately.
+
+```
+qiime perc-norm percentile-normalize \
+  --i-table test_otu_table.transpose.qza \
+  --m-metadata-file test_metadata.txt \
+  --m-metadata-column DiseaseState \
+  --m-batch-file test_metadata.txt \
+  --m-batch-column batch \
+  --o-perc-norm-table test_out.percentile_qiime.qza
+```
+
 # To do's
 
 * Update QIIME 2 downstream analyses to accept `FeatureTable[PercentileNormalized]`     
-* Accept user-inputted case and control labels in column
 * Make tutorial showing how to percentile normalize multiple datasets
     - download multiple feature tables; add case/control and study columns in the metadata
     - merge the feature tables (and metadata tables, if possible) with q2-feature-table
     - percentile normalize the data with the batch handling
-* After PercentileNormalized is accepted into q2-types, remove declaration from here
+    - Note: I will probably not write this tutorial. If you are a user of q2-perc-norm and would like to write this, I would be very grateful!
 
 # Versions
 
