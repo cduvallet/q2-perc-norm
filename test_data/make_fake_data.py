@@ -50,3 +50,10 @@ with open('test_control_samples.txt', 'w') as f:
     f.write('\t'.join(inds[:n]))
 with open('test_case_samples.txt', 'w') as f:
     f.write('\t'.join(inds[n:]))
+
+# Make fake data to test the empty case/control labels
+
+meta['disease_no_ctrl'] = meta['DiseaseState'].replace('control', 'contorl')
+meta['disease_no_case'] = meta['DiseaseState'].replace('case', 'caes')
+meta['disease_no_case_ctrl'] = meta['DiseaseState'].replace('control', 'contorl').replace('case', 'caes')
+meta.to_csv('test_metadata.bad_case_ctrl_labels.txt', sep='\t', index=False)

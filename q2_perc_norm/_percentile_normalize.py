@@ -160,6 +160,17 @@ def percentile_normalize(table: biom.Table,
         control_samples = meta[meta == "control"].index.tolist()
         case_samples = meta[meta == "case"].index.tolist()
 
+        # Check that there are cases and controls
+        if len(control_samples) == 0:
+            if len(case_samples) == 0:
+                # Both cases and controls are zero
+                raise ValueError('There are no case or control samples in your data. Check the metadata column for "case" and "control" labels.')
+            # Just controls as zero
+            raise ValueError('There are no control samples in your data. Check the metadata column for "control" labels.')
+        # Just cases are zero
+        elif len(case_samples) == 0:
+            raise ValueError('There are no case samples in your data. Check the metadata column for "case" labels.')
+
         # Make sure there are enough controls to perform normalization
         if len(control_samples) < n_control_thresh:
             if batch is not None:

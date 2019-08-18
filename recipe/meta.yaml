@@ -1,6 +1,6 @@
 package:
   name: q2_perc_norm
-  version: 2019.4
+  version: 2019.4.1
 
 source:
   path: ../

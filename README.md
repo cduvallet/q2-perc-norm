@@ -111,6 +111,7 @@ qiime perc-norm percentile-normalize \
 
 # Versions
 
+* 2019.4.1 - add more informative error in case "control" or "case" label is not found in the metadata
 * 2019.4 - re-build package with Python 3.6, for compatibility with qiime 2019.1 release and later
 * 2018.10 - fix conflicting PercentileNormalize type after qiime2 2018.8 release
 * 2018.4.2 - allow Numeric metadata column to specify batch    
