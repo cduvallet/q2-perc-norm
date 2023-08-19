@@ -11,7 +11,7 @@ from setuptools import setup, find_packages
 # Setup copied from q2-emperor
 setup(
     name="perc-norm",
-    version="2019.4.1",
+    version="2023.7.1",
     packages=find_packages(),
     author="Claire Duvallet",
     author_email="duvallet@mit.edu",
