@@ -141,7 +141,7 @@ def percentile_normalize(table: biom.Table,
 
     ## Convert biom Table into dense pandas dataframe
     # Transpose so samples are in rows and OTUs/features in columns
-    df = table.to_dataframe().to_dense().T
+    df = table.to_dataframe().sparse.to_dense().T
 
     # Set up a list of metadata series, one per batch
     batches_to_norm = []
