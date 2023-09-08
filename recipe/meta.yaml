@@ -28,7 +28,7 @@ requirements:
     - q2-types
     # Other modules used in the actual code
     - biom-format
-    - pandas >= 1.0.0
+    - pandas >=1.0.0
     - numpy
     - scipy
 
