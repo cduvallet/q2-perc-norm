@@ -3,7 +3,7 @@ channels:
 - conda-forge
 - bioconda
 dependencies:
-  - qiime2-amplicon-2025.7
+  - qiime2-amplicon
   - pip
   - pip:
     - q2-perc-norm@git+https://github.com/cduvallet/q2-perc-norm.git@master
