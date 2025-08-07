@@ -17,7 +17,7 @@ cites = qiime2.plugin.Citations.load('citations.bib',
     package='q2_perc_norm')
 
 plugin = qiime2.plugin.Plugin(
-    name='perc_norm',
+    name='perc-norm',
     version=q2_perc_norm.__version__,
     website='http://www.github.com/cduvallet/q2-perc-norm',
     package='q2_perc_norm',
