@@ -10,7 +10,7 @@ from setuptools import setup, find_packages
 
 # Setup copied from q2-emperor
 setup(
-    name="perc-norm",
+    name="q2-perc-norm",
     version="2023.7.1",
     packages=find_packages(),
     author="Claire Duvallet",
