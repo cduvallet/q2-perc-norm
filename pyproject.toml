@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "q2-perc-norm"
+version = "2023.7.1"
+description = "QIIME 2 plugin for percentile normalization"
+authors = [{ name = "Claire Duvallet", email = "cduvallet@gmail.com" }]
+license = { text = "BSD-3-Clause" }
+dependencies = [
+    "pandas", 
+    "biom-format", 
+    "numpy", 
+    "scipy"
+]
+
+[project.entry-points."qiime2.plugins"]
+perc_norm = "q2_perc_norm.plugin_setup:plugin"
+
+[tool.setuptools]
+packages = ["q2_perc_norm"]
+package-data = { "q2_perc_norm" = ["citations.bib"] }
