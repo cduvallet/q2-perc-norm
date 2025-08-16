@@ -4,15 +4,6 @@ channels:
 - bioconda
 dependencies:
   - qiime2-tiny
-  # Note 1: Add any additional conda dependencies here.
   - pip
   - pip:
-  # Note 2: Add any additional pip dependencies here.
-  #   - # some pip dependency
-  # Note 3: If you host your repository on GitHub, and you uncomment and modify
-  # the following lines to replace:
-  # REPO-OWNER with the user or organization name that owns the repository
-  # DEFAULT-BRANCH with the default branch of the repository (typically 'main')
-  # Your installation commands can be updated to install
-  # from this file without additional steps.
-  #   - q2-perc-norm@git+https://github.com/REPO-OWNER/q2-perc-norm.git@DEFAULT-BRANCH
+    - q2-perc-norm@git+https://github.com/cduvallet/q2-perc-norm.git@master
