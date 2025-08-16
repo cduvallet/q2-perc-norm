@@ -8,9 +8,6 @@ lint:
 	q2lint
 	flake8
 
-test: all
-	py.test
-
 install: all
 	$(PYTHON) -m pip install -v .
 
