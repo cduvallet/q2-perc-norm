@@ -8,6 +8,13 @@ readme = {file = "README.md", content-type = "text/markdown"}
 license = {file = "LICENSE"}
 dynamic = ["version"]
 
+dependencies = [
+    "pandas",
+    "biom-format",
+    "numpy",
+    "scipy"
+]
+
 [project.urls]
 Homepage = "https://github.com/cduvallet/q2-perc-norm"
 
