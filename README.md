@@ -1,131 +1,114 @@
 # q2-perc-norm
 
-A [QIIME 2](https://qiime2.org) plugin [developed](https://develop.qiime2.org) by Claire Duvallet (cduvallet@gmail.com). 🔌
+QIIME 2 plugin for percentile normalization to correct for batch effects in microbiome case-control studies.
+
+Read more about the method in our [paper](https://doi.org/10.1371/journal.pcbi.1006102) (Gibbons et al, PLOS Comp Bio 2018).
 
 ## Installation instructions
 
-**The following instructions are intended to be a starting point** and should be replaced when `q2-perc-norm` is ready to share with others.
-They will enable you to install the most recent *development* version of `q2-perc-norm`.
-Remember that *release* versions should be used for all "real" work (i.e., where you're not testing or prototyping) - if there aren't instructions for installing a release version of this plugin, it is probably not yet intended for use in practice.
+You can install this plugin by cloning this repo and installing manually. (Older versions of the plugin are available on [conda](https://anaconda.org/cduvallet/q2_perc_norm), but these are not compatible with pandas >= 2.0).
 
-### Install Prerequisites
+You need to have QIIME 2 version 2019.1 or later (though earlier versions of this plugin work with earlier versions of QIIME 2).
+You need to be in a QIIME 2 environment for this installation to work.
+[Install QIIME 2](https://docs.qiime2.org/2019.1/install/) and activate the QIIME 2 virtual environment (`source activate qiime2-2019.1`) before installing this plugin.
 
-[Miniconda](https://conda.io/miniconda.html) provides the `conda` environment and package manager, and is currently the only supported way to install QIIME 2.
-Follow the instructions for downloading and installing Miniconda.
+To install from this repo, clone the repo to your computer, `cd` into the main directory, and run:
 
-After installing Miniconda and opening a new terminal, make sure you're running the latest version of `conda`:
-
-```bash
-conda update conda
+```
+pip install .
 ```
 
-###  Install development version of `q2-perc-norm`
+You can check that the installation worked by typing `qiime` on the command line.
+The `perc-norm` plugin should show up in the list of available plugins.
 
-Next, you need to get into the top-level `q2-perc-norm` directory.
-If you already have this (e.g., because you just created the plugin), this may be as simple as running `cd q2-perc-norm`.
-If not, you'll need the `q2-perc-norm` directory on your computer.
-How you do that will differ based on how the package is shared, and ideally the developer will update these instructions to be more specific (remember, these instructions are intended to be a starting point).
-For example, if it's maintained in a GitHub repository, you can achieve this by [cloning the repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository).
-Once you have the directory on your computer, change (`cd`) into it.
+# Using the plugin
 
-If you're in a conda environment, deactivate it by running `conda deactivate`.
+The only method in this plugin is `percentile-normalize`, which percentile normalizes the abundance of OTUs in case samples with respect to their abundance in control samples.
 
+## Preparing your data
 
-Then, follow the install instructions below, based on your machine's architecture:
+You'll need to prepare your OTU table and metadata file for use with this plugin.
+Your OTU table should be imported as a [QIIME 2 artifact](https://docs.qiime2.org/2019.1/concepts/#data-files-qiime-2-artifacts), with **OTUs in rows** and **samples in columns**.
 
-<details>
-<summary><strong>🍏&nbsp;Apple Silicon (ARM)</strong></summary>
-<p>&nbsp;</p>
+Metadata should be a tab-delimited file with a column that contains samples labeled `case` and `control`.
+It can also have a column that labels which batch each sample belongs to.
+If this column is not specified, then percentile normalization is performed across all cases and controls provided in one go.
 
-Start by creating a new conda environment:
+If your OTU table is already a QIIME 2 artifact, you can skip directly to running the code.
+Otherwise, follow the instructions below to use your own tab-delimited OTU table.
 
-```shell
-CONDA_SUBDIR=osx-64 conda env create -n q2-perc-norm-dev --file ./environment-files/q2-perc-norm-qiime2-tiny-dev.yml
+### Notes on metadata and batch indicators
+
+Your metadata file and the file that indicates which samples are in which batch don't need to be the same file (but can be the same). If you have two files, both need to have the sample IDs in the first column, and these IDs need to match the sample IDs in your OTU table.
+
+The name of the column indicating the case/control status and the batch don't matter, because you specify them in your call to the percentile normalization function.
+
+The values in the column indicating batches don't matter, as long as each batch gets a distinct value.
+
+The values in the column indicating case or control status do matter, and need to be `case` or `control` exactly.
+
+### Import tab-delimited OTU table into QIIME 2
+
+You can use your own OTU table, or make a fake OTU table with `make_fake_data.py` in the `test_data/` folder here. This creates a fake OTU table and associated metadata file with case/control data (labeled in the "DiseaseState" column) from two different "experiments," labeled in the "batch" column.
+
+If you're starting from a text file, you first need to convert the OTU table to biom format before you can import it into QIIME 2.
+
+```
+biom convert \
+  -i test_otu_table.transpose.txt \
+  -o test_otu_table.transpose.biom \
+  --table-type="OTU table" \
+  --to-hdf5
 ```
 
-After this completes, activate the new environment you created by running:
+Once it's in biom format, you can import it into QIIME 2, turning it into an artifact:
 
-```shell
-conda activate q2-perc-norm-dev
+```
+qiime tools import \
+  --input-path test_otu_table.transpose.biom \
+  --type 'FeatureTable[RelativeFrequency]' \
+  --source-format BIOMV210Format \
+  --output-path test_otu_table.transpose.qza
 ```
 
-Once this new environment has been activated, update your conda config to set the subdir to osx-64:
+## Run percentile normalization
 
-```shell
-conda config --env --set subdir osx-64
+You then run the `percentile-normalize` script from the `perc-norm` qiime plugin.
+
+```
+qiime perc-norm percentile-normalize \
+  --i-table test_otu_table.transpose.qza \
+  --m-metadata-file test_metadata.txt \
+  --m-metadata-column DiseaseState \
+  --o-perc-norm-table test_out.percentile_qiime.qza
 ```
 
-Finally, run:
+If you have multiple batches in your metadata, you can also use the `--m-batch-file` and `--m-batch-column` flags to percentile normalize each batch separately.
 
-```shell
-make install
 ```
-</details>
-
-<details>
-<summary><strong>🛠&nbsp;All other architectures (Apple Intel, Linux, WSL)</strong></summary>
-<p>&nbsp;</p>
-
-Start by creating a new conda environment:
-
-```shell
-conda env create -n q2-perc-norm-dev --file ./environment-files/q2-perc-norm-qiime2-tiny-dev.yml
+qiime perc-norm percentile-normalize \
+  --i-table test_otu_table.transpose.qza \
+  --m-metadata-file test_metadata.txt \
+  --m-metadata-column DiseaseState \
+  --m-batch-file test_metadata.txt \
+  --m-batch-column batch \
+  --o-perc-norm-table test_out.percentile_qiime.qza
 ```
 
-After this completes, activate the new environment you created by running:
+## Versions
 
-```shell
-conda activate q2-perc-norm-dev
-```
+* 2023.7.2 - update package to use QIIME 2 template
+* 2023.7.1 - fix bug related pandas 1.0.0 update
+* 2019.4.1 - add more informative error in case "control" or "case" label is not found in the metadata
+* 2019.4 - re-build package with Python 3.6, for compatibility with qiime 2019.1 release and later
+* 2018.10 - fix conflicting PercentileNormalize type after qiime2 2018.8 release
+* 2018.4.2 - allow Numeric metadata column to specify batch    
+* 2018.4.1 - add multiple batch handling in `percentile-normalize`     
+* 2018.4.0 - initial plugin
 
-Finally, run:
+## Dependency conflicts
 
-```shell
-make install
-```
-</details>
-
-## Testing and using the most recent development version of `q2-perc-norm`
-
-After completing the install steps above, confirm that everything is working as expected by running:
-
-```shell
-make test
-```
-
-You should get a report that tests were run, and you should see that all tests passed and none failed.
-It's usually ok if some warnings are reported.
-
-If all of the tests pass, you're ready to use the plugin.
-Start by making QIIME 2's command line interface aware of `q2-perc-norm` by running:
-
-```shell
-qiime dev refresh-cache
-```
-
-You should then see the plugin in the list of available plugins if you run:
-
-```shell
-qiime info
-```
-
-You should be able to review the help text by running:
-
-```shell
-qiime perc-norm --help
-```
-
-Have fun! 😎
-
-## About
-
-The `q2-perc-norm` Python package was [created from a template](https://develop.qiime2.org/en/latest/plugins/tutorials/create-from-template.html).
-To learn more about `q2-perc-norm`, refer to the [project website](https://github.com/cduvallet/q2-perc-norm).
-To learn how to use QIIME 2, refer to the [QIIME 2 User Documentation](https://docs.qiime2.org).
-To learn QIIME 2 plugin development, refer to [*Developing with QIIME 2*](https://develop.qiime2.org).
-
-`q2-perc-norm` is a QIIME 2 community plugin, meaning that it is not necessarily developed and maintained by the developers of QIIME 2.
-Please be aware that because community plugins are developed by the QIIME 2 developer community, and not necessarily the QIIME 2 developers themselves, some may not be actively maintained or compatible with current release versions of the QIIME 2 distributions.
-More information on development and support for community plugins can be found [here](https://library.qiime2.org).
-If you need help with a community plugin, first refer to the [project website](https://github.com/cduvallet/q2-perc-norm).
-If that page doesn't provide information on how to get help, or you need additional help, head to the [Community Plugins category](https://forum.qiime2.org/c/community-contributions/community-plugins/14) on the QIIME 2 Forum where the QIIME 2 developers will do their best to help you.
+* q2-perc-norm versions earlier than 2023.7.1 are not compatible with pandas 1.0 and above.
+* q2-perc-norm versions 2018.* are not compatible with QIIME 2 versions 2019.* and later
+* q2-perc-norm version 2018.10 and later are not compatible with QIIME 2 versions earlier than 2018.8
+* q2-perc-norm versions 2018.4.* are not compatible with QIIME 2 versions 2018.8 or later
