@@ -6,7 +6,7 @@
 # The full license is in the file LICENSE, distributed with this software.
 # ----------------------------------------------------------------------------
 
-from qiime2.plugin import Citations, Plugin, Metadata, MetadataColumn, Categorical, Numeric, SemanticType
+from qiime2.plugin import Citations, Plugin, Metadata, MetadataColumn, Categorical, Numeric, SemanticType, Int, Float
 from q2_types.feature_table import FeatureTable, RelativeFrequency, BIOMV210DirFmt, PercentileNormalized
 from q2_perc_norm import __version__
 from q2_perc_norm._methods import percentile_normalize
@@ -38,8 +38,8 @@ plugin.methods.register_function(
     },
     parameters={'metadata': MetadataColumn[Categorical],
                 'batch': MetadataColumn[Categorical | Numeric],
-                'n_control_thresh': qiime2.plugin.Int,
-                'otu_thresh': qiime2.plugin.Float
+                'n_control_thresh': Int,
+                'otu_thresh': Float
     },
     parameter_descriptions={
         'metadata': ('Sample metadata column which has samples '
