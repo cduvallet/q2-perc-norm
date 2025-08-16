@@ -4,7 +4,7 @@ QIIME 2 plugin for percentile normalization to correct for batch effects in micr
 
 Read more about the method in our [paper](https://doi.org/10.1371/journal.pcbi.1006102) (Gibbons et al, PLOS Comp Bio 2018).
 
-# Installing
+## Installation instructions
 
 You can install this plugin by cloning this repo and installing manually. (Older versions of the plugin are available on [conda](https://anaconda.org/cduvallet/q2_perc_norm), but these are not compatible with pandas >= 2.0).
 
@@ -95,20 +95,9 @@ qiime perc-norm percentile-normalize \
   --o-perc-norm-table test_out.percentile_qiime.qza
 ```
 
-# To do's
+## Versions
 
-Note: I am no longer actively maintaining this plugin or working in the microbiome space, so these to do's will not be done by me. If you want to contribute, don't hesitate to reach out!
-
-* Update QIIME 2 downstream analyses to accept `FeatureTable[PercentileNormalized]`     
-   - This is both a scientific and coding challenge, since we'd have to decide which analyses are appropriate for percentile normalized data. For more, see my response to this [forum question](https://forum.qiime2.org/t/q2-perc-norm-questions/9171).
-* Make tutorial showing how to percentile normalize multiple datasets
-    - download multiple feature tables; add case/control and study columns in the metadata
-    - merge the feature tables (and metadata tables, if possible) with q2-feature-table
-    - percentile normalize the data with the batch handling
-    - Note: I will probably not write this tutorial. If you are a user of q2-perc-norm and would like to write this, I would be very grateful!
-
-# Versions
-
+* 2023.7.2 - update package to use QIIME 2 template
 * 2023.7.1 - fix bug related pandas 1.0.0 update
 * 2019.4.1 - add more informative error in case "control" or "case" label is not found in the metadata
 * 2019.4 - re-build package with Python 3.6, for compatibility with qiime 2019.1 release and later
@@ -117,24 +106,9 @@ Note: I am no longer actively maintaining this plugin or working in the microbio
 * 2018.4.1 - add multiple batch handling in `percentile-normalize`     
 * 2018.4.0 - initial plugin
 
-## Compatibilities
+## Dependency conflicts
 
 * q2-perc-norm versions earlier than 2023.7.1 are not compatible with pandas 1.0 and above.
 * q2-perc-norm versions 2018.* are not compatible with QIIME 2 versions 2019.* and later
 * q2-perc-norm version 2018.10 and later are not compatible with QIIME 2 versions earlier than 2018.8
-* q2-perc-norm versions 2018.4.* are not compatible with QIIME 2 versions
-2018.8 or later
-
-# Updating conda build
-
-This is mostly a note to myself, if you are using this plugin then you can ignore this. This is the command to build an updated conda package:
-
-```
-conda-build recipe/ \
- -c qiime2/label/r2019.1 \
- -c conda-forge \
- -c bioconda \
- -c defaults \
- --override-channels \
- --python 3.6
-```
+* q2-perc-norm versions 2018.4.* are not compatible with QIIME 2 versions 2018.8 or later

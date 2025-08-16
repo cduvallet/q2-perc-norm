@@ -1,23 +1,35 @@
-[build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta"
-
 [project]
 name = "q2-perc-norm"
-version = "2023.7.1"
-description = "QIIME 2 plugin for percentile normalization"
-authors = [{ name = "Claire Duvallet", email = "cduvallet@gmail.com" }]
-license = { text = "BSD-3-Clause" }
-dependencies = [
-    "pandas", 
-    "biom-format", 
-    "numpy", 
-    "scipy"
+authors = [
+    { name = "Claire Duvallet", email = "cduvallet@gmail.com"}
 ]
+description = "Percentile normalization"
+readme = {file = "README.md", content-type = "text/markdown"}
+license = {file = "LICENSE"}
+dynamic = ["version"]
 
-[project.entry-points."qiime2.plugins"]
-perc_norm = "q2_perc_norm.plugin_setup:plugin"
+[project.urls]
+Homepage = "https://github.com/cduvallet/q2-perc-norm"
+
+[project.entry-points.'qiime2.plugins']
+"q2-perc-norm" = "q2_perc_norm.plugin_setup:plugin"
+
+[build-system]
+requires = [
+    "setuptools",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.dynamic]
+version = {attr = "q2_perc_norm._version.__version__"}
 
 [tool.setuptools]
-packages = ["q2_perc_norm"]
-package-data = { "q2_perc_norm" = ["citations.bib"] }
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["q2_perc_norm*"]
+
+[tool.setuptools.package-data]
+q2_perc_norm = ["**/*"]

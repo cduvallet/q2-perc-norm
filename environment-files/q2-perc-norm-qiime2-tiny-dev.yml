@@ -1,9 +1,9 @@
 channels:
-- https://packages.qiime2.org/qiime2/2025.7/amplicon/released
+- https://packages.qiime2.org/qiime2/latest/tiny/passed
 - conda-forge
 - bioconda
 dependencies:
-  - qiime2-amplicon
+  - qiime2-tiny
   - pip
   - pip:
     - q2-perc-norm@git+https://github.com/cduvallet/q2-perc-norm.git@master
